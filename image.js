@@ -154,7 +154,6 @@ exports.uploadToS3Bucket = function(authParams, uploadParams){
                     uuidv4() + "/" +
                     uploadParams.originalName;
                 uploadOriginal(data, key1).then(function(result){
-                    console.log(result);
                     removeTempFile(filePath);
                     var url = 
                         "https://" +
@@ -167,7 +166,6 @@ exports.uploadToS3Bucket = function(authParams, uploadParams){
                         order: uploadParams.order,
                         name: uploadParams.originalName
                     };
-                    console.log(body);
                     createImage(authParams, body).then(function(image){
                         resolve(image);
                     }).catch(function(err){
