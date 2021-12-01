@@ -4,6 +4,7 @@ const sharp = require('sharp');
 const { v4: uuidv4 } = require('uuid');
 const jwt = require('./jwt');
 const models = require('./models');
+const axios = require('axios');
 
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -181,3 +182,27 @@ exports.uploadToS3Bucket = function(authParams, uploadParams){
         });
     });
 } 
+
+
+exports.resizeImage = function(body){
+    return new Promise(function(resolve, reject){
+        //var options = {
+        //    url: body.url,
+        //    responseType: 'arraybuffer'
+        //};
+
+        var options = {
+            url: body.url,
+            method: 'get',
+            responseType: 'arraybuffer'
+        };
+        console.log(options);
+
+        axios(options).then(function(arrayBuffer){
+            var buffer = Buffer.from(arrayBuffer.data, 'binary');
+            resolve("ok");
+        }).catch(function(err){
+            reject(err);
+        });
+    });
+}

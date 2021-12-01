@@ -51,4 +51,14 @@ app.delete('/images/:id', function(req, res){
         res.status(400).send(err);
     });
 });
+
+app.post('/images', function(req, res){
+    imageService.resizeImage(req.body).then(function(result){
+        res.send(result);
+    }).catch(function(err){
+        res.status(400).send(err);
+    });
+});
+
+
 app.listen(PORT, HOST);
