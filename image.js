@@ -186,21 +186,24 @@ exports.uploadToS3Bucket = function(authParams, uploadParams){
 
 exports.resizeImage = function(body){
     return new Promise(function(resolve, reject){
-        //var options = {
-        //    url: body.url,
-        //    responseType: 'arraybuffer'
-        //};
-
         var options = {
             url: body.url,
             method: 'get',
             responseType: 'arraybuffer'
         };
-        console.log(options);
-
         axios(options).then(function(arrayBuffer){
             var buffer = Buffer.from(arrayBuffer.data, 'binary');
-            resolve("ok");
+            var key = 
+                //body.listingId + "/";
+                body.listingId + "/" +
+                body.width + "/" +
+                body.height + "/" +
+                "image.jpg";
+            uploadResized(buffer, body.width, body.height, key).then(function(result){
+                resolve(result);
+            }).catch(function(err){
+                reject(err);
+            });
         }).catch(function(err){
             reject(err);
         });
